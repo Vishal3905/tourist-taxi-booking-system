@@ -1,0 +1,10 @@
+body { font-family: Arial; background: #f4f4f4; margin: 0; }
+header { background: #009688; padding: 15px; color: white;
+         display: flex; justify-content: space-between; align-items: center; }
+header a { color: white; text-decoration: none; margin-left: 10px; }
+.container { padding: 20px; }
+.btn { background: #ff5722; padding: 10px 15px; color: white; border-radius: 5px; border: none; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+input, select { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+footer { text-align: center; padding: 15px; background: #009688; color: white; margin-top: 20px; }
+.estimate { background: white; padding: 10px; border-radius: 5px; margin-top: 10px; }
