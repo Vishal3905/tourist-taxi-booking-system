@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>Vishal's Tourist Taxi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <!-- Leaflet CSS -->
@@ -13,25 +17,26 @@
 </head>
 <body>
 
-<header>
-    <h1>🚖 Vishal's Tourist Taxi</h1>
-    <nav>
-        <a href="/" class="btn">Home</a>
-        <a href="/booking" class="btn">Book Now</a>
-    </nav>
-</header>
+<!-- Modern Navbar -->
+<div class="navbar">
+    <h1>🚖 Tourist Taxi</h1>
+    <div>
+        <a href="/">Home</a>
+        <a href="/booking">Book Ride</a>
+    </div>
+</div>
 
-<div class="container">
+<!-- Page Content -->
+<div class="main-content">
     {% block content %}{% endblock %}
 </div>
 
+<!-- Premium Footer -->
 <footer>
-    © 2025 Vishal Taxi Service
+    <p>© 2025 Vishal Tourist Taxi | Himachal Pradesh</p>
 </footer>
 
-
-
-<!-- Your static JS -->
+<!-- Main JS -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
