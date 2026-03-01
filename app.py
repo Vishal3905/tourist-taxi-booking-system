@@ -1,39 +1,27 @@
 from flask import Flask, render_template, request, jsonify
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev_secret")
 
-# Environment Variables (Render uses these)
-SMTP_USER = os.getenv("SMTP_USER")
-SMTP_PASS = os.getenv("SMTP_PASS")
-RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL") or SMTP_USER
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+FROM_EMAIL = os.getenv("SMTP_USER")   # must be verified in SendGrid
+RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
 
-def send_booking_email(subject: str, html_body: str, plain_body: str = ""):
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = SMTP_USER
-    msg["To"] = RECEIVER_EMAIL
+def send_booking_email(subject, html_body, plain_body=""):
+    message = Mail(
+        from_email=FROM_EMAIL,
+        to_emails=RECEIVER_EMAIL,
+        subject=subject,
+        plain_text_content=plain_body,
+        html_content=html_body
+    )
 
-    part1 = MIMEText(plain_body or html_body, "plain")
-    part2 = MIMEText(html_body, "html")
-
-    msg.attach(part1)
-    msg.attach(part2)
-
-    try:
-        # Use SSL (Port 465) – Best for Render
-        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=20)
-        server.login(SMTP_USER, SMTP_PASS)
-        server.sendmail(SMTP_USER, RECEIVER_EMAIL, msg.as_string())
-        server.quit()
-    except Exception as e:
-        print("SMTP ERROR:", str(e))
-        raise e
+    sg = SendGridAPIClient(SENDGRID_API_KEY)
+    sg.send(message)
 
 
 @app.route("/")
@@ -72,8 +60,8 @@ def send_email_route():
       <li><strong>Date & Time:</strong> {data.get('datetime')}</li>
       <li><strong>Package:</strong> {data.get('package_type')}</li>
       <li><strong>Passengers:</strong> {data.get('passengers')}</li>
-      <li><strong>Distance (km):</strong> {data.get('distance_km')}</li>
-      <li><strong>Fare (est):</strong> Rs. {data.get('fare')}</li>
+      <li><strong>Distance:</strong> {data.get('distance_km')} km</li>
+      <li><strong>Fare:</strong> Rs. {data.get('fare')}</li>
     </ul>
     """
 
@@ -87,19 +75,18 @@ Drop: {data.get('drop_address')}
 Date & Time: {data.get('datetime')}
 Package: {data.get('package_type')}
 Passengers: {data.get('passengers')}
-Distance (km): {data.get('distance_km')}
-Fare (est): Rs. {data.get('fare')}
+Distance: {data.get('distance_km')} km
+Fare: Rs. {data.get('fare')}
 """
 
     try:
         send_booking_email(subject, html_body, plain_body)
         return jsonify({"ok": True})
     except Exception as e:
-        print("EMAIL ERROR:", str(e))
-        return jsonify({"error": "Email send failed"}), 500
+        print("SENDGRID ERROR:", str(e))
+        return jsonify({"error": "Email failed"}), 500
 
 
-# Render Dynamic Port Fix
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
