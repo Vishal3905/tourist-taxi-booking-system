@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-container">
+
+    <h1>🚙 Vehicle Registration</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input
+            type="text"
+            name="vehicle_name"
+            placeholder="Vehicle Name"
+            required
+            style="width:100%; margin-bottom:15px;"
+        >
+
+        <input
+            type="text"
+            name="vehicle_number"
+            placeholder="Vehicle Number"
+            required
+            style="width:100%; margin-bottom:15px;"
+        >
+
+        <input
+            type="text"
+            name="vehicle_type"
+            placeholder="Vehicle Type"
+            required
+            style="width:100%; margin-bottom:15px;"
+        >
+
+        <input
+            type="number"
+            name="seats"
+            placeholder="Seats"
+            required
+            style="width:100%; margin-bottom:20px;"
+        >
+
+        <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            required
+        >
+
+        <button type="submit" class="btn">
+            Register Vehicle
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

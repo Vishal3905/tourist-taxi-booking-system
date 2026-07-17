@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>🚖 Premium Tourist Taxi Service</h1>
+        <p>Safe, Comfortable & Affordable Travel Across Himachal Pradesh</p>
+
+        <a href="/booking" class="btn">
+            Book Your Ride
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+
+    <div class="feature-card" data-aos="fade-up">
+        <h3>🛡 Safe Travel</h3>
+        <p>Experienced driver with excellent route knowledge and safe driving practices.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>⏰ 24/7 Availability</h3>
+        <p>Transparent fare estimation with no hidden charges.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>⏰ 24/7 Availability</h3>
+        <p>Book rides anytime for local travel and tourist destinations.</p>
+    </div>
+
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section">
+
+    <div class="stat-card">
+        <h2 class="counter" data-target="500">0</h2>
+        <p>Trips Completed</p>
+    </div>
+
+    <div class="stat-card">
+        <h2 class="counter" data-target="100">0</h2>
+        <p>Happy Tourists</p>
+    </div>
+
+    <div class="stat-card">
+        <h2 class="rating-counter">0</h2>
+        <p>Customer Rating</p>
+    </div>
+
+</section>
+
+<section class="car-section">
+
+    <h2>🚖 Available Drivers & Vehicles</h2>
+
+    <div class="gallery-grid">
+
+        {% for vehicle in vehicles %}
+
+        <div class="gallery-card">
+
+            {% if vehicle[6] %}
+            <img
+                src="{{ url_for('static', filename='uploads/' + vehicle[6]) }}"
+                alt="{{ vehicle[2] }}"
+            >
+            {% endif %}
+
+            <h3>{{ vehicle[2] }}</h3>
+
+            <p>
+                👨 Driver:
+                {{ vehicle[8] }}
+            </p>
+
+            <p>
+                📞 {{ vehicle[9] }}
+            </p>
+
+            <a
+                href="tel:{{ vehicle[9] }}"
+                class="btn"
+            >
+                Call Driver
+            </a>
+
+            <p>
+                {{ vehicle[4] }} • {{ vehicle[5] }} Seats
+            </p>
+
+            <p>
+                Vehicle No:
+                {{ vehicle[3] }}
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- Packages Section -->
+<section class="packages-section">
+
+    <h2>🏔 Tourist Packages</h2>
+
+    <div class="features">
+
+        <div class="package-card">
+            <h3>🏙 City Tour</h3>
+            <p>4 Hours</p>
+            <h4>₹1000</h4>
+        </div>
+
+        <div class="package-card">
+            <h3>🏛 Heritage Tour</h3>
+            <p>8 Hours</p>
+            <h4>₹1800</h4>
+        </div>
+
+        <div class="package-card">
+            <h3>🏔 Hill Station Tour</h3>
+            <p>Full Day Trip</p>
+            <h4>₹2500</h4>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Tourist Destinations -->
+<section class="gallery-section">
+
+    <h2>🏔 Popular Destinations</h2>
+
+    <div class="gallery-grid">
+
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='images/shimla.jpg') }}" alt="Shimla">
+            <h3>Shimla</h3>
+        </div>
+
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='images/manali.jpg') }}" alt="Manali">
+            <h3>Manali</h3>
+        </div>
+
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='images/kufri.jpg') }}" alt="Kufri">
+            <h3>Kufri</h3>
+        </div>
+
+        <div class="gallery-card">
+            <img src="{{ url_for('static', filename='images/chail.jpg') }}" alt="Chail">
+            <h3>Chail</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews">
+
+    <h2>⭐ Customer Reviews</h2>
+
+    <div class="features">
+
+        <div class="review-card">
+            <h3>⭐⭐⭐⭐⭐</h3>
+            <p>Excellent service and very comfortable journey. Highly recommended.</p>
+            <h4>— Rahul Sharma</h4>
+        </div>
+
+        <div class="review-card">
+            <h3>⭐⭐⭐⭐⭐</h3>
+            <p>Best taxi experience during our Himachal trip. Professional driver.</p>
+            <h4>— Priya Verma</h4>
+        </div>
+
+        <div class="review-card">
+            <h3>⭐⭐⭐⭐⭐</h3>
+            <p>Affordable pricing and on-time service. Will book again.</p>
+            <h4>— Aman Thakur</h4>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+
+    <div class="cta-overlay">
+
+        <h2>🏔 Ready For Your Himachal Adventure?</h2>
+
+        <p>
+            Explore Shimla, Manali, Kufri, Chail and many more destinations
+            with our premium taxi service.
+        </p>
+
+        <a href="/booking" class="btn">
+            Book Your Ride Now
+        </a>
+
+    </div>
+
+</section>
+
+<!-- Why Choose Us -->
+<section class="features">
+
+    <div class="feature-card">
+        <h3>📍 Local Expertise</h3>
+        <p>Extensive knowledge of Himachal tourist destinations and routes.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>🚘 Comfortable Vehicle</h3>
+        <p>Air-conditioned sedan suitable for long journeys and family trips.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>🎯 Reliable Service</h3>
+        <p>Punctual pickups and professional customer service.</p>
+    </div>
+
+</section>
+
+<!-- Contact Section -->
+<section class="contact-section">
+
+    <h2>📞 Contact Us</h2>
+
+    <p><strong>Phone:</strong> +91 6230503905</p>
+    <p><strong>Email:</strong> vishalsingh3905@gmail.com</p>
+
+    <br>
+
+    <a href="/booking" class="btn">
+        Book Your Taxi Now
+    </a>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-container">
+
+    <h1>🚖 Driver Registration</h1>
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            required
+        >
+
+        <input
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+            required
+        >
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required
+        >
+
+        <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            required
+        >
+
+        <input
+            type="text"
+            name="license_no"
+            placeholder="Driving License Number"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+        >
+
+        <button type="submit" class="btn">
+            Register Driver
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

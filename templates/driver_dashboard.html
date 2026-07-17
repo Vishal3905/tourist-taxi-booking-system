@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="admin-container">
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>
+            🚖 Welcome {{ driver_name }}
+        </h1>
+        <a href="/vehicle-register" class="btn">
+            ➕ Add Vehicle
+        </a>
+
+        <a href="/logout" class="btn">
+            Logout
+        </a>
+    </div>
+
+    <br>
+
+    <div class="feature-card">
+        <p>Total Bookings: {{ bookings|length }}</p>
+        <p>Pending Rides: {{ pending_count }}</p>
+        <p>Completed Rides: {{ completed_count }}</p>
+    </div>
+
+    <!-- Recent Bookings Section -->
+
+    <h2 style="margin-top:40px;">
+        📋 Recent Bookings
+    </h2>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Pickup</th>
+            <th>Drop</th>
+            <th>Package</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking[1] }}</td>
+            <td>{{ booking[2] }}</td>
+            <td>{{ booking[3] }}</td>
+            <td>{{ booking[4] }}</td>
+            <td>{{ booking[6] }}</td>
+            <td>{{ booking[10] }}</td>
+
+            <td>
+
+            {% if booking[10] == "Pending" %}
+
+                <a href="/accept-booking/{{ booking[0] }}"
+                class="btn">
+                Accept
+                </a>
+
+            {% elif booking[10] == "Accepted" %}
+
+                <a href="/complete-booking/{{ booking[0] }}"
+                class="btn">
+                Complete
+                </a>
+
+            {% else %}
+
+                ✅ Completed
+
+            {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="display:flex; justify-content:space-between; align-items:center; margin:50px;">
+
+    <h1>
+        👨‍💼 Admin Dashboard
+    </h1>
+
+    <a href="/admin-logout" class="btn">
+        Logout
+    </a>
+
+</div>
+
+<div class="stats-section">
+
+    <div class="stat-card">
+        <h2>{{ bookings|length }}</h2>
+        <p>Total Bookings</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>₹{{ total_revenue }}</h2>
+        <p>Total Revenue</p>
+    </div>
+
+</div>
+
+</div>
+
+<!-- Ride Statistics -->
+
+<div class="stats-section">
+
+    <div class="stat-card">
+        <h2>{{ pending_count }}</h2>
+        <p>Pending Rides</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>{{ accepted_count }}</h2>
+        <p>Accepted Rides</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>{{ completed_count }}</h2>
+        <p>Completed Rides</p>
+    </div>
+
+</div>
+
+<div class="stats-section">
+
+    <div class="stat-card">
+        <h2>₹{{ average_fare }}</h2>
+        <p>Average Fare</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>₹{{ highest_fare }}</h2>
+        <p>Highest Fare</p>
+    </div>
+
+    <div class="stat-card">
+        <h2>₹{{ lowest_fare }}</h2>
+        <p>Lowest Fare</p>
+    </div>
+
+</div>
+
+<h2 style="margin-top:50px;">
+
+<form method="GET" action="/admin-dashboard">
+
+    <input
+        type="text"
+        name="phone"
+        placeholder="Search by phone number"
+    >
+
+    <button
+        type="submit"
+        class="btn"
+    >
+        Search
+    </button>
+
+</form>  
+
+<div style="margin-top:20px;">
+
+    <a href="/admin-dashboard" class="btn">
+        All
+    </a>
+
+    <a href="/admin-dashboard?status=Pending" class="btn">
+        Pending
+    </a>
+
+    <a href="/admin-dashboard?status=Accepted" class="btn">
+        Accepted
+    </a>
+
+    <a href="/admin-dashboard?status=Completed" class="btn">
+        Completed
+    </a>
+
+</div>
+
+<a href="/export-bookings" class="btn">
+    📥 Export Excel
+</a>
+
+<h2 style="margin-top:50px;">
+    🚖 Pending Drivers
+</h2>
+
+<table>
+
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>License</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for driver in pending_drivers %}
+    <tr>
+
+        <td>{{ driver[1] }}</td>
+        <td>{{ driver[2] }}</td>
+        <td>{{ driver[5] }}</td>
+        <td>{{ driver[8] }}</td>
+
+        <td>
+            <a
+                href="/approve-driver/{{ driver[0] }}"
+                class="btn"
+            >
+                Approve
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+<h2 style="margin-top:50px;">
+    🚙 Pending Vehicles
+</h2>
+
+<table>
+
+    <tr>
+        <th>Vehicle</th>
+        <th>Number</th>
+        <th>Type</th>
+        <th>Seats</th>
+        <th>Photo</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for vehicle in pending_vehicles %}
+    <tr>
+
+        <td>{{ vehicle[2] }}</td>
+
+        <td>{{ vehicle[3] }}</td>
+
+        <td>{{ vehicle[4] }}</td>
+
+        <td>{{ vehicle[5] }}</td>
+
+        <td>
+            <img
+                src="{{ url_for('static', filename='uploads/' + vehicle[6]) }}"
+                width="120"
+                style="border-radius:10px;"
+            >
+        </td>
+
+        <td>{{ vehicle[7] }}</td>
+
+        <td>
+            <a
+                href="/approve-vehicle/{{ vehicle[0] }}"
+                class="btn"
+            >
+                Approve
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+
+</table>
+
+<h2 style="margin-top:50px;">
+    📋 All Bookings
+</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Pickup</th>
+        <th>Drop</th>
+        <th>Package</th>
+        <th>Status</th>
+        <th>Fare</th>
+        <th>Action</th>
+    </tr>
+
+    {% for booking in bookings %}
+    <tr>
+        <td>{{ booking[1] }}</td>
+        <td>{{ booking[2] }}</td>
+        <td>{{ booking[3] }}</td>
+        <td>{{ booking[4] }}</td>
+        <td>{{ booking[6] }}</td>
+        <td>{{ booking[10] }}</td>
+        <td>₹{{ booking[9] }}</td>
+
+        <td>
+            <a
+                href="/delete-booking/{{ booking[0] }}"
+                class="btn"
+                onclick="return confirm('Delete this booking?')"
+            >
+                Delete
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

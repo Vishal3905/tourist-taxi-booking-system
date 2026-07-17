@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="booking-title">
+    🚖 Book Your Taxi
+</h1>
+
+<p class="booking-subtitle">
+    Fill the details below to book your ride.
+</p>
+
+<form id="bookingForm" onsubmit="handleBooking(event)">
+    <div class="grid">
+        <input id="name" placeholder="Full Name" required>
+        <input id="phone" placeholder="Phone Number" required>
+        <input id="pickup_address" placeholder="Pickup Location" required>
+        <input id="drop_address" placeholder="Drop Location" required>
+        <input id="datetime" type="datetime-local" required>
+
+        <select id="package_type">
+            <option>City Tour</option>
+            <option>Heritage Tour</option>
+            <option>Hill Station</option>
+        </select>
+
+        <input id="passengers" type="number" min="1" value="1">
+    </div>
+
+    <input type="hidden" id="pickup_lat">
+    <input type="hidden" id="pickup_lng">
+    <input type="hidden" id="drop_lat">
+    <input type="hidden" id="drop_lng">
+
+    <h3 style="margin-top:20px;">
+        📍 Select Pickup & Drop Locations
+    </h3>
+
+    <div id="map" style="height:300px; margin-top:20px;"></div>
+
+    <div id="estimate" class="estimate" style="margin-top:15px;">
+        Distance and fare will appear here...
+    </div>
+
+    <button class="btn" type="submit" style="margin-top:20px;">
+        Book Now
+    </button>
+</form>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const est = document.getElementById("estimate");
+
+    const map = L.map("map").setView([26.8467, 80.9462], 7);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+    let pickupMarker = L.marker([26.8467, 80.9462], { draggable: true }).addTo(map);
+    let dropMarker   = L.marker([26.8567, 80.9562], { draggable: true }).addTo(map);
+
+    function setInputs() {
+        const p = pickupMarker.getLatLng();
+        const d = dropMarker.getLatLng();
+
+        document.getElementById("pickup_lat").value = p.lat;
+        document.getElementById("pickup_lng").value = p.lng;
+        document.getElementById("drop_lat").value = d.lat;
+        document.getElementById("drop_lng").value = d.lng;
+    }
+
+    async function updateFare() {
+        setInputs();
+        est.innerText = "Calculating distance...";
+
+        const pLat = document.getElementById("pickup_lat").value;
+        const pLng = document.getElementById("pickup_lng").value;
+        const dLat = document.getElementById("drop_lat").value;
+        const dLng = document.getElementById("drop_lng").value;
+
+        ;
+
+        try {
+
+            const response = await fetch("/calculate-route", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    pickup_lat: parseFloat(pLat),
+                    pickup_lng: parseFloat(pLng),
+                    drop_lat: parseFloat(dLat),
+                    drop_lng: parseFloat(dLng)
+
+                })
+
+            });
+
+            const data = await response.json();
+
+            if (!data.routes) {
+                est.innerText = "Distance calculation failed.";
+                return;
+            }
+
+            const dist = data.routes[0].summary.distance / 1000;
+
+            const fare = Math.round((100 + dist * 30) * 100) / 100;
+
+            est.innerText =
+                "Distance: " + dist.toFixed(2) +
+                " km — Fare: Rs. " + fare;
+
+            est.dataset.km = dist.toFixed(2);
+            est.dataset.fare = fare;
+
+        } catch (error) {
+
+            console.log(error);
+
+            est.innerText = "API Error.";
+
+        }
+    }
+
+    pickupMarker.on("dragend", updateFare);
+    dropMarker.on("dragend", updateFare);
+    updateFare();
+
+
+    // ===============================
+    // HANDLE FORM SUBMISSION
+    // ===============================
+    window.handleBooking = async function (e) {
+    e.preventDefault();
+
+    const dist = est.dataset.km;
+    const fare = est.dataset.fare;
+
+    if (!dist || !fare) {
+        alert("Please wait for distance calculation.");
+        return;
+    }
+
+    const data = {
+        name: document.getElementById("name").value,
+        phone: document.getElementById("phone").value,
+        pickup_address: document.getElementById("pickup_address").value,
+        drop_address: document.getElementById("drop_address").value,
+        datetime: document.getElementById("datetime").value,
+        package_type: document.getElementById("package_type").value,
+        passengers: document.getElementById("passengers").value,
+        distance_km: dist,
+        fare: fare
+    };
+    try {
+
+            const response = await fetch("/send_email", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            alert("Booking Submitted Successfully!");
+
+        } catch (error) {
+
+            alert("Booking Failed.");
+
+        }
+};
+
+});
+</script>
+
+{% endblock %}

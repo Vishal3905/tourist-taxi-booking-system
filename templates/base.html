@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Vishal's Tourist Taxi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Modern Navbar -->
+<div class="navbar">
+    <h1>🚖 Tourist Taxi</h1>
+    <div>
+        <a href="/">Home</a>
+        <a href="/booking">Book Ride</a>
+        <a href="/driver-register">Driver Register</a>
+        <a href="/driver-login">Driver Login</a>
+        <a href="/admin-login">Admin Login</a>
+    </div>
+</div>
+
+<!-- Page Content -->
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Premium Footer -->
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-box">
+            <h3>🚖 Vishal Tourist Taxi</h3>
+            <p>
+                Safe, Comfortable and Affordable taxi service across
+                Himachal Pradesh.
+            </p>
+        </div>
+
+        <div class="footer-box">
+            <h3>Quick Links</h3>
+
+            <a href="/">Home</a>
+            <a href="/booking">Book Ride</a>
+        </div>
+
+        <div class="footer-box">
+            <h3>Tour Packages</h3>
+
+            <p>🏙 City Tour</p>
+            <p>🏛 Heritage Tour</p>
+            <p>🏔 Hill Station Tour</p>
+        </div>
+
+        <div class="footer-box">
+            <h3>Contact</h3>
+
+            <p>📞 +91 6230503905</p>
+            <p>📧 vishalsingh3905@gmail.com</p>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Vishal Tourist Taxi | All Rights Reserved
+    </div>
+
+</footer>
+
+<!-- Main JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<a href="https://wa.me/916230503905"
+   class="whatsapp-float"
+   target="_blank">
+
+   💬
+</a>
+
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+AOS.init({
+    duration:1000,
+    once:true
+});
+</script>
+
+</body>
+</html>
